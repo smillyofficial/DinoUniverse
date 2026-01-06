@@ -18,7 +18,7 @@
         body {
             background-color: var(--dark);
             color: #fff;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -26,44 +26,40 @@
             align-items: center;
         }
 
-        /* --- THE SPACE ENGINE --- */
-        .space-background {
+        /* Fixed Space Background */
+        #space-canvas {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2;
-            overflow: hidden;
             background: radial-gradient(circle at center, #0a0a1a 0%, #050508 100%);
         }
 
-        /* The Slowly Orbiting Minecraft Earth */
-        .earth-orbit {
-            position: absolute;
-            top: 10%;
-            right: -50px;
-            width: 300px;
-            height: 300px;
-            background: url('https://i.imgur.com/8mYpX5G.png'); /* Pixel Earth */
+        /* Fixed Earth Image - Using a reliable source */
+        .planet-earth {
+            position: fixed;
+            top: 15%;
+            right: 8%;
+            width: 120px;
+            height: 120px;
+            background: url('https://wiki.minetest.net/images/f/f3/Earth.png'); 
             background-size: contain;
             background-repeat: no-repeat;
-            opacity: 0.4;
-            filter: blur(1px) drop-shadow(0 0 30px rgba(57, 255, 20, 0.2));
-            animation: slowOrbit 60s infinite linear;
             z-index: -1;
+            filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.4));
+            animation: float 8s ease-in-out infinite;
         }
 
-        @keyframes slowOrbit {
-            0% { transform: rotate(0deg) translateX(20px) rotate(0deg); }
-            50% { transform: rotate(10deg) translateX(-20px) rotate(-10deg); }
-            100% { transform: rotate(0deg) translateX(20px) rotate(0deg); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-        /* --- UI CONTENT --- */
         .container {
             max-width: 900px;
             width: 90%;
             text-align: center;
             padding-top: 80px;
-            position: relative;
+            z-index: 1;
         }
 
         .main-title {
@@ -77,12 +73,12 @@
         .neon-p { color: var(--purple); text-shadow: 0 0 20px var(--purple); }
 
         .hero-desc {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #d1d1d1;
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
             border-radius: 20px;
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 50px;
         }
@@ -105,7 +101,6 @@
 
         .card:hover { border-color: var(--green); transform: translateY(-5px); }
 
-        /* Roles UI */
         .roles-wrapper {
             background: rgba(188, 19, 254, 0.05);
             padding: 40px;
@@ -144,17 +139,13 @@
 
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        footer { padding: 40px; color: #555; font-size: 0.8rem; letter-spacing: 2px; }
-
-        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
+        footer { padding: 40px; color: #555; font-size: 0.8rem; letter-spacing: 2px; text-align: center;}
     </style>
 </head>
 <body>
 
-    <div class="space-background">
-        <canvas id="star-canvas"></canvas>
-        <div class="earth-orbit"></div>
-    </div>
+    <canvas id="space-canvas"></canvas>
+    <div class="planet-earth"></div>
 
     <div class="container">
         <h1 class="main-title">
@@ -163,19 +154,17 @@
         </h1>
 
         <p class="hero-desc">
-            Welcome to the official website of <b>DINO UNIVERSE</b>. 
-            This is similar to the unstable smp but ours isnt scripted. 
-            Everything that happens here is the result of pure player interaction.
+            Welcome to the official website of <b>DINO UNIVERSE</b>. This is similar to the unstable smp but ours isnt scripted. Everything that happens here is the result of pure player interaction.
         </p>
 
         <div class="grid">
             <div class="card">
                 <h3 style="color:var(--green); margin-bottom:10px;">⛏️ NO SCRIPTS</h3>
-                <p>What happens, happens. We don't follow a storyline. We let the players create the history.</p>
+                <p>What happens, happens. We don't follow a storyline. Players create the history.</p>
             </div>
             <div class="card">
                 <h3 style="color:var(--purple); margin-bottom:10px;">☄️ PURE CHAOS</h3>
-                <p>Every weekend a new chaos will find its way to desimate you.</p>
+                <p>Every weekend a new chaos will find its way to decimate you.</p>
             </div>
             <div class="card">
                 <h3 style="color:var(--blue); margin-bottom:10px;">🎮 JUST FOR FUN</h3>
@@ -208,42 +197,40 @@
     </footer>
 
     <script>
-        // Custom Colored Starfield
-        const canvas = document.getElementById('star-canvas');
+        const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        const colors = ['#39FF14', '#BC13FE', '#00d2ff', '#ffffff'];
 
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             stars = [];
-            for(let i=0; i<180; i++) {
+            for(let i=0; i<200; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
-                    size: Math.random() * 2,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    blink: Math.random() * 0.02
+                    size: Math.random() * 1.5,
+                    opacity: Math.random(),
+                    blink: Math.random() * 0.01 + 0.005
                 });
             }
         }
 
-        function draw() {
+        function animate() {
             ctx.fillStyle = '#050508';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             stars.forEach(s => {
-                ctx.fillStyle = s.color;
-                ctx.beginPath();
-                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
-                ctx.fill();
+                s.opacity += s.blink;
+                if (s.opacity > 1 || s.opacity < 0) s.blink *= -1;
+                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+                ctx.fillRect(s.x, s.y, s.size, s.size);
             });
-            requestAnimationFrame(draw);
+            requestAnimationFrame(animate);
         }
 
         window.addEventListener('resize', init);
         init();
-        draw();
+        animate();
 
         function showRoles() {
             const grid = document.getElementById("rolesGrid");
