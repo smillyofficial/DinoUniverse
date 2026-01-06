@@ -40,7 +40,7 @@
             right: 8%;
             width: 120px;
             height: 120px;
-            background: url('https://i.imgur.com/8mYpX5G.png'); /* Pixel Art Earth */
+            background: url('https://i.imgur.com/8mYpX5G.png'); 
             background-size: contain;
             background-repeat: no-repeat;
             z-index: -1;
@@ -55,7 +55,7 @@
             left: 5%;
             width: 140px;
             height: 140px;
-            background: url('https://i.imgur.com/Hl9yUvD.png'); /* Pixel Art Saturn */
+            background: url('https://i.imgur.com/Hl9yUvD.png'); 
             background-size: contain;
             background-repeat: no-repeat;
             z-index: -1;
@@ -180,18 +180,23 @@
         </h1>
 
         <p class="hero-desc">
-            The unscripted chaos of <b>DINO UNIVERSE</b>. 
-            No scripts, no rules, just players building a legacy in a lawless space.
+            Welcome to the official website of <b>DINO UNIVERSE</b>. 
+            This is similar to the unstable smp but ours isnt scripted. 
+            Everything that happens here is the result of pure player interaction.
         </p>
 
         <div class="grid">
             <div class="card">
                 <h3 style="color:var(--green); margin-bottom:10px;">⛏️ NO SCRIPTS</h3>
-                <p>Real wars. Real history. Created by you.</p>
+                <p>What happens, happens. We don't follow a storyline. We let the players create the history, the wars, and the alliances themselves.</p>
             </div>
             <div class="card">
-                <h3 style="color:var(--purple); margin-bottom:10px;">☄️ CHAOS WEEKENDS</h3>
-                <p>Every weekend, cosmic events shift the balance of the server.</p>
+                <h3 style="color:var(--purple); margin-bottom:10px;">☄️ PURE CHAOS</h3>
+                <p>You want peace and inner war?, nah not on this server cuz every weekend a new chaos will find its way to desimate you</p>
+            </div>
+            <div class="card">
+                <h3 style="color:var(--blue); margin-bottom:10px;">🎮 JUST FOR FUN</h3>
+                <p>This server is built for the community. We've added custom features to keep things interesting without ruining the vanilla feel.</p>
             </div>
         </div>
 
@@ -201,17 +206,19 @@
                 <div class="team-card">
                     <h4 style="color:var(--red)">ANTAGONISTS</h4>
                     <p style="margin-top:10px;">Pixeleified<br>Tempest</p>
+                    <p style="font-size: 0.7rem; color: #444; margin-top: 5px;">More will be added soon when server officially grows</p>
                 </div>
                 <div class="team-card">
                     <h4 style="color:var(--blue)">PROTAGONISTS</h4>
                     <p style="margin-top:10px;">Akram<br>Mk_Mikey</p>
+                    <p style="font-size: 0.7rem; color: #444; margin-top: 5px;">More will be added soon when server officially grows</p>
                 </div>
             </div>
         </div>
 
         <div class="status-bar">
             <div class="dot"></div>
-            IP: <span style="color: var(--green)">DINOSMP.GITHUB.IO (SOON)</span>
+            IP: <span style="color: var(--green)">Coming soon 👀</span>
         </div>
     </div>
 
@@ -223,57 +230,21 @@
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
-        let shootingStars = [];
 
         function init() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             stars = [];
-            for (let i = 0; i < 150; i++) {
+            for (let i = 0; i < 200; i++) {
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
                     size: Math.random() * 1.5,
                     opacity: Math.random(),
-                    blink: Math.random() * 0.02
+                    blink: Math.random() * 0.01 + 0.005
                 });
             }
         }
-
-        class ShootingStar {
-            constructor() {
-                this.reset();
-            }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = 0;
-                this.len = Math.random() * 80 + 20;
-                this.speed = Math.random() * 10 + 6;
-                this.active = false;
-            }
-            draw() {
-                if (!this.active) return;
-                let gradient = ctx.createLinearGradient(this.x, this.y, this.x - this.len, this.y + this.len);
-                gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x - this.len, this.y + this.len);
-                ctx.stroke();
-            }
-            update() {
-                if (!this.active && Math.random() < 0.01) this.active = true;
-                if (this.active) {
-                    this.x += this.speed;
-                    this.y += this.speed;
-                    if (this.y > canvas.height || this.x > canvas.width) this.reset();
-                }
-            }
-        }
-
-        for (let i = 0; i < 2; i++) shootingStars.push(new ShootingStar());
 
         function animate() {
             ctx.fillStyle = '#050508';
@@ -285,8 +256,6 @@
                 ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
                 ctx.fillRect(s.x, s.y, s.size, s.size);
             });
-
-            shootingStars.forEach(ss => { ss.update(); ss.draw(); });
             requestAnimationFrame(animate);
         }
 
