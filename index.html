@@ -8,7 +8,7 @@
         :root {
             --green: #39FF14;
             --purple: #BC13FE;
-            --dark: #050508;
+            --dark: #020205;
             --red: #ff3131;
             --blue: #00d2ff;
         }
@@ -18,7 +18,7 @@
         body {
             background-color: var(--dark);
             color: #fff;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -26,72 +26,80 @@
             align-items: center;
         }
 
-        /* Fixed Space Background */
+        /* --- SPACE BACKGROUND LAYER --- */
         #space-canvas {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: -2;
-            background: radial-gradient(circle at center, #0a0a1a 0%, #050508 100%);
+            background: radial-gradient(circle at center, #0a0a20 0%, #020205 100%);
         }
 
-        /* Fixed Earth Image - Using a reliable source */
-        .planet-earth {
+        /* Floating Cube Earth */
+        .earth {
             position: fixed;
-            top: 15%;
-            right: 8%;
-            width: 120px;
-            height: 120px;
-            background: url('https://wiki.minetest.net/images/f/f3/Earth.png'); 
+            top: 10%;
+            right: 5%;
+            width: 150px;
+            height: 150px;
+            /* Replaced with your pixelated cube image */
+            background: url('https://replicate.delivery/yhqm/fS6l8I78hV0VWyfC5Bf4D3qOfY6fIeWpWdfIeR7pWOfWfIeR/output.png');
             background-size: contain;
             background-repeat: no-repeat;
             z-index: -1;
-            filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.4));
-            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(0, 210, 255, 0.3));
+            animation: floatEarth 20s infinite linear;
+            opacity: 0.9;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+        @keyframes floatEarth {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(-20px, 30px) rotate(5deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
         }
 
+        /* --- CONTENT STYLING --- */
         .container {
             max-width: 900px;
             width: 90%;
             text-align: center;
-            padding-top: 80px;
-            z-index: 1;
+            padding-top: 60px;
+            position: relative;
         }
 
         .main-title {
-            font-size: clamp(3.5rem, 10vw, 6.5rem);
+            font-size: clamp(3.5rem, 10vw, 6rem);
             font-weight: 900;
-            line-height: 0.85;
-            margin-bottom: 25px;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            line-height: 0.9;
         }
 
-        .neon-g { color: var(--green); text-shadow: 0 0 20px var(--green); }
-        .neon-p { color: var(--purple); text-shadow: 0 0 20px var(--purple); }
+        .neon-g { color: var(--green); text-shadow: 0 0 15px var(--green); animation: flicker 4s infinite; }
+        .neon-p { color: var(--purple); text-shadow: 0 0 15px var(--purple); }
 
         .hero-desc {
-            font-size: 1.1rem;
-            color: #d1d1d1;
-            background: rgba(255, 255, 255, 0.05);
-            padding: 25px;
-            border-radius: 20px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            margin-bottom: 50px;
+            font-size: 1.2rem;
+            color: #ccc;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            margin-bottom: 40px;
         }
 
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
-            margin-bottom: 60px;
+            margin-bottom: 50px;
         }
 
         .card {
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px;
             border-radius: 24px;
@@ -99,53 +107,54 @@
             transition: 0.3s;
         }
 
-        .card:hover { border-color: var(--green); transform: translateY(-5px); }
+        .card:hover { border-color: var(--green); transform: scale(1.02); }
 
+        /* Roles */
         .roles-wrapper {
-            background: rgba(188, 19, 254, 0.05);
-            padding: 40px;
-            border-radius: 35px;
-            border: 1px solid rgba(188, 19, 254, 0.2);
-            margin-bottom: 60px;
+            background: rgba(188, 19, 254, 0.1);
+            padding: 30px;
+            border-radius: 30px;
+            border: 1px solid var(--purple);
+            margin-bottom: 50px;
         }
 
         .role-main-btn {
             background: var(--purple);
             color: white;
-            padding: 18px 50px;
-            font-size: 1.3rem;
-            font-weight: 900;
-            border-radius: 15px;
+            padding: 15px 40px;
+            font-weight: 800;
+            border-radius: 12px;
             cursor: pointer;
             border: none;
-            box-shadow: 0 0 25px var(--purple);
+            box-shadow: 0 0 20px var(--purple);
         }
 
-        .team-container { display: none; margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .team-card { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .team-container { display: none; margin-top: 25px; gap: 15px; grid-template-columns: 1fr 1fr; }
+        .team-card { background: rgba(0,0,0,0.6); padding: 15px; border-radius: 15px; }
 
         .status-bar {
-            background: #000;
+            background: rgba(0,0,0,0.8);
             padding: 15px 40px;
-            border-radius: 50px;
-            border: 2px solid var(--green);
+            border-radius: 100px;
+            border: 1px solid var(--green);
             display: inline-flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 80px;
+            margin-bottom: 50px;
         }
 
-        .dot { width: 10px; height: 10px; background: var(--green); border-radius: 50%; box-shadow: 0 0 15px var(--green); animation: pulse 1s infinite; }
+        .dot { width: 10px; height: 10px; background: var(--green); border-radius: 50%; box-shadow: 0 0 10px var(--green); animation: pulse 1s infinite; }
 
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+        @keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
-        footer { padding: 40px; color: #555; font-size: 0.8rem; letter-spacing: 2px; text-align: center;}
+        footer { padding: 40px; color: #888; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
     <canvas id="space-canvas"></canvas>
-    <div class="planet-earth"></div>
+    <div class="earth"></div>
 
     <div class="container">
         <h1 class="main-title">
@@ -154,34 +163,39 @@
         </h1>
 
         <p class="hero-desc">
-            Welcome to the official website of <b>DINO UNIVERSE</b>. This is similar to the unstable smp but ours isnt scripted. Everything that happens here is the result of pure player interaction.
+            Welcome to the official website of <b>DINO UNIVERSE</b>. 
+            This is similar to the unstable smp but ours isnt scripted. 
+            Everything that happens here is the result of pure player interaction.
         </p>
 
         <div class="grid">
             <div class="card">
-                <h3 style="color:var(--green); margin-bottom:10px;">⛏️ NO SCRIPTS</h3>
-                <p>What happens, happens. We don't follow a storyline. Players create the history.</p>
+                <h3 style="color:var(--green)">🥩 No Scripts</h3>
+                <p>No storylines. Just players creating history, wars, and alliances.</p>
             </div>
             <div class="card">
-                <h3 style="color:var(--purple); margin-bottom:10px;">☄️ PURE CHAOS</h3>
-                <p>Every weekend a new chaos will find its way to decimate you.</p>
+                <h3 style="color:var(--purple)">🌋 Pure Chaos</h3>
+                <p>You want peace and inner war?, nah not on this server cuz every weekend a new chaos will find its way to desimate you</p>
             </div>
             <div class="card">
-                <h3 style="color:var(--blue); margin-bottom:10px;">🎮 JUST FOR FUN</h3>
-                <p>Custom features designed to keep things interesting without ruining the vanilla feel.</p>
+                <h3 style="color:var(--blue)">🎮 Just for Fun</h3>
+                <p>Custom features designed for the community to keep the vanilla vibe alive.</p>
             </div>
         </div>
 
         <div class="roles-wrapper">
             <button class="role-main-btn" onclick="showRoles()">ROLES</button>
+            <p style="margin-top: 10px; color: #bbb;">Main member roles 👀</p>
             <div id="rolesGrid" class="team-container">
                 <div class="team-card">
-                    <h4 style="color:var(--red)">ANTAGONISTS</h4>
-                    <p style="margin-top:10px;">Pixeleified<br>Tempest</p>
+                    <h4 style="color:var(--red)">Antagonist</h4>
+                    <p>Pixeleified, Tempest</p>
+                    <small style="color:#555">More added soon</small>
                 </div>
                 <div class="team-card">
-                    <h4 style="color:var(--blue)">PROTAGONISTS</h4>
-                    <p style="margin-top:10px;">Akram<br>Mk_Mikey</p>
+                    <h4 style="color:var(--blue)">Protagonist</h4>
+                    <p>Akram, Mk_Mikey</p>
+                    <small style="color:#555">More added soon</small>
                 </div>
             </div>
         </div>
@@ -193,43 +207,50 @@
     </div>
 
     <footer>
-        &copy; 2026 DINO UNIVERSE | Made by the love from Dino Bros Admins
+        &copy; 2026 DINO UNIVERSE SMP | Made by the love from Dino Bros Admins
     </footer>
 
     <script>
+        // Space Background Animation (STARS ONLY)
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         let stars = [];
 
-        function init() {
+        function resize() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-            stars = [];
-            for(let i=0; i<200; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    opacity: Math.random(),
-                    blink: Math.random() * 0.01 + 0.005
-                });
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Star {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5;
+                this.alpha = Math.random();
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            update() {
+                this.alpha += (Math.random() - 0.5) * 0.1;
+                if (this.alpha < 0) this.alpha = 0;
+                if (this.alpha > 1) this.alpha = 1;
             }
         }
 
+        for (let i = 0; i < 200; i++) stars.push(new Star());
+
         function animate() {
-            ctx.fillStyle = '#050508';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            stars.forEach(s => {
-                s.opacity += s.blink;
-                if (s.opacity > 1 || s.opacity < 0) s.blink *= -1;
-                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
-                ctx.fillRect(s.x, s.y, s.size, s.size);
-            });
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => { s.draw(); s.update(); });
             requestAnimationFrame(animate);
         }
-
-        window.addEventListener('resize', init);
-        init();
         animate();
 
         function showRoles() {
