@@ -17,15 +17,8 @@
 
         body {
             background-color: var(--dark);
-            /* Static Star Field Background */
-            background-image: 
-                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
-            background-size: 550px 550px, 350px 350px, 250px 250px;
-            background-position: 0 0, 40px 60px, 130px 270px;
             color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             overflow-x: hidden;
             min-height: 100vh;
             display: flex;
@@ -33,38 +26,35 @@
             align-items: center;
         }
 
-        /* --- CARTOON PLANETS (No falling lines) --- */
-        .planet-earth {
+        /* --- THE SPACE ENGINE --- */
+        .space-background {
             position: fixed;
-            top: 15%;
-            right: 8%;
-            width: 120px;
-            height: 120px;
-            background: url('https://i.imgur.com/8mYpX5G.png'); 
-            background-size: contain;
-            background-repeat: no-repeat;
-            z-index: -1;
-            filter: drop-shadow(0 0 15px rgba(57, 255, 20, 0.2));
-            animation: float 8s ease-in-out infinite;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -2;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #0a0a1a 0%, #050508 100%);
         }
 
-        .planet-saturn {
-            position: fixed;
-            bottom: 10%;
-            left: 5%;
-            width: 140px;
-            height: 140px;
-            background: url('https://i.imgur.com/Hl9yUvD.png'); 
+        /* The Slowly Orbiting Minecraft Earth */
+        .earth-orbit {
+            position: absolute;
+            top: 10%;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            background: url('https://i.imgur.com/8mYpX5G.png'); /* Pixel Earth */
             background-size: contain;
             background-repeat: no-repeat;
+            opacity: 0.4;
+            filter: blur(1px) drop-shadow(0 0 30px rgba(57, 255, 20, 0.2));
+            animation: slowOrbit 60s infinite linear;
             z-index: -1;
-            opacity: 0.6;
-            animation: float 12s ease-in-out infinite reverse;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(5deg); }
+        @keyframes slowOrbit {
+            0% { transform: rotate(0deg) translateX(20px) rotate(0deg); }
+            50% { transform: rotate(10deg) translateX(-20px) rotate(-10deg); }
+            100% { transform: rotate(0deg) translateX(20px) rotate(0deg); }
         }
 
         /* --- UI CONTENT --- */
@@ -73,7 +63,7 @@
             width: 90%;
             text-align: center;
             padding-top: 80px;
-            z-index: 1;
+            position: relative;
         }
 
         .main-title {
@@ -92,7 +82,7 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
             border-radius: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 50px;
         }
@@ -105,7 +95,7 @@
         }
 
         .card {
-            background: rgba(10, 10, 15, 0.8);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px;
             border-radius: 24px;
@@ -113,10 +103,7 @@
             transition: 0.3s;
         }
 
-        .card:hover {
-            border-color: var(--green);
-            transform: translateY(-5px);
-        }
+        .card:hover { border-color: var(--green); transform: translateY(-5px); }
 
         /* Roles UI */
         .roles-wrapper {
@@ -140,7 +127,7 @@
         }
 
         .team-container { display: none; margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .team-card { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .team-card { background: rgba(0,0,0,0.7); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
 
         .status-bar {
             background: #000;
@@ -158,12 +145,16 @@
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
         footer { padding: 40px; color: #555; font-size: 0.8rem; letter-spacing: 2px; }
+
+        #star-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -3; }
     </style>
 </head>
 <body>
 
-    <div class="planet-earth"></div>
-    <div class="planet-saturn"></div>
+    <div class="space-background">
+        <canvas id="star-canvas"></canvas>
+        <div class="earth-orbit"></div>
+    </div>
 
     <div class="container">
         <h1 class="main-title">
@@ -180,15 +171,15 @@
         <div class="grid">
             <div class="card">
                 <h3 style="color:var(--green); margin-bottom:10px;">⛏️ NO SCRIPTS</h3>
-                <p>What happens, happens. We don't follow a storyline. We let the players create the history, the wars, and the alliances themselves.</p>
+                <p>What happens, happens. We don't follow a storyline. We let the players create the history.</p>
             </div>
             <div class="card">
                 <h3 style="color:var(--purple); margin-bottom:10px;">☄️ PURE CHAOS</h3>
-                <p>You want peace and inner war?, nah not on this server cuz every weekend a new chaos will find its way to desimate you</p>
+                <p>Every weekend a new chaos will find its way to desimate you.</p>
             </div>
             <div class="card">
                 <h3 style="color:var(--blue); margin-bottom:10px;">🎮 JUST FOR FUN</h3>
-                <p>This server is built for the community. We've added custom features to keep things interesting without ruining the vanilla feel.</p>
+                <p>Custom features designed to keep things interesting without ruining the vanilla feel.</p>
             </div>
         </div>
 
@@ -213,10 +204,47 @@
     </div>
 
     <footer>
-        &copy; 2026 DINO UNIVERSE SMP | Made by the love from Dino Bros Admins
+        &copy; 2026 DINO UNIVERSE | Made by the love from Dino Bros Admins
     </footer>
 
     <script>
+        // Custom Colored Starfield
+        const canvas = document.getElementById('star-canvas');
+        const ctx = canvas.getContext('2d');
+        let stars = [];
+        const colors = ['#39FF14', '#BC13FE', '#00d2ff', '#ffffff'];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            stars = [];
+            for(let i=0; i<180; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    blink: Math.random() * 0.02
+                });
+            }
+        }
+
+        function draw() {
+            ctx.fillStyle = '#050508';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => {
+                ctx.fillStyle = s.color;
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        draw();
+
         function showRoles() {
             const grid = document.getElementById("rolesGrid");
             grid.style.display = (grid.style.display === "grid") ? "none" : "grid";
