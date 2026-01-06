@@ -17,6 +17,13 @@
 
         body {
             background-color: var(--dark);
+            /* Static Star Field Background */
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
             color: #fff;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             overflow-x: hidden;
@@ -26,14 +33,7 @@
             align-items: center;
         }
 
-        /* --- CARTOON SPACE ELEMENTS --- */
-        #space-canvas {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2;
-        }
-
-        /* Minecrafty Planet Earth */
+        /* --- CARTOON PLANETS (No falling lines) --- */
         .planet-earth {
             position: fixed;
             top: 15%;
@@ -48,7 +48,6 @@
             animation: float 8s ease-in-out infinite;
         }
 
-        /* Cartoon Saturn */
         .planet-saturn {
             position: fixed;
             bottom: 10%;
@@ -68,7 +67,7 @@
             50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-        /* --- CONTENT UI --- */
+        /* --- UI CONTENT --- */
         .container {
             max-width: 900px;
             width: 90%;
@@ -82,7 +81,6 @@
             font-weight: 900;
             line-height: 0.85;
             margin-bottom: 25px;
-            filter: drop-shadow(0 0 20px rgba(188, 19, 254, 0.3));
         }
 
         .neon-g { color: var(--green); text-shadow: 0 0 20px var(--green); }
@@ -94,7 +92,7 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 25px;
             border-radius: 20px;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 50px;
         }
@@ -107,26 +105,25 @@
         }
 
         .card {
-            background: rgba(10, 10, 15, 0.7);
+            background: rgba(10, 10, 15, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 30px;
             border-radius: 24px;
             text-align: left;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: 0.3s;
         }
 
         .card:hover {
             border-color: var(--green);
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(57, 255, 20, 0.1);
+            transform: translateY(-5px);
         }
 
         /* Roles UI */
         .roles-wrapper {
-            background: linear-gradient(145deg, rgba(188, 19, 254, 0.1), rgba(0,0,0,0));
+            background: rgba(188, 19, 254, 0.05);
             padding: 40px;
             border-radius: 35px;
-            border: 1px solid rgba(188, 19, 254, 0.3);
+            border: 1px solid rgba(188, 19, 254, 0.2);
             margin-bottom: 60px;
         }
 
@@ -140,13 +137,10 @@
             cursor: pointer;
             border: none;
             box-shadow: 0 0 25px var(--purple);
-            transition: 0.3s;
         }
 
-        .role-main-btn:hover { transform: scale(1.1); box-shadow: 0 0 40px var(--purple); }
-
         .team-container { display: none; margin-top: 30px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
-        .team-card { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
+        .team-card { background: rgba(0,0,0,0.5); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
 
         .status-bar {
             background: #000;
@@ -157,19 +151,17 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 80px;
-            font-weight: bold;
         }
 
         .dot { width: 10px; height: 10px; background: var(--green); border-radius: 50%; box-shadow: 0 0 15px var(--green); animation: pulse 1s infinite; }
 
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } 100% { opacity: 1; transform: scale(1); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        footer { padding: 40px; color: #555; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+        footer { padding: 40px; color: #555; font-size: 0.8rem; letter-spacing: 2px; }
     </style>
 </head>
 <body>
 
-    <canvas id="space-canvas"></canvas>
     <div class="planet-earth"></div>
     <div class="planet-saturn"></div>
 
@@ -206,12 +198,10 @@
                 <div class="team-card">
                     <h4 style="color:var(--red)">ANTAGONISTS</h4>
                     <p style="margin-top:10px;">Pixeleified<br>Tempest</p>
-                    <p style="font-size: 0.7rem; color: #444; margin-top: 5px;">More will be added soon when server officially grows</p>
                 </div>
                 <div class="team-card">
                     <h4 style="color:var(--blue)">PROTAGONISTS</h4>
                     <p style="margin-top:10px;">Akram<br>Mk_Mikey</p>
-                    <p style="font-size: 0.7rem; color: #444; margin-top: 5px;">More will be added soon when server officially grows</p>
                 </div>
             </div>
         </div>
@@ -227,42 +217,6 @@
     </footer>
 
     <script>
-        const canvas = document.getElementById('space-canvas');
-        const ctx = canvas.getContext('2d');
-        let stars = [];
-
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            stars = [];
-            for (let i = 0; i < 200; i++) {
-                stars.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 1.5,
-                    opacity: Math.random(),
-                    blink: Math.random() * 0.01 + 0.005
-                });
-            }
-        }
-
-        function animate() {
-            ctx.fillStyle = '#050508';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            stars.forEach(s => {
-                s.opacity += s.blink;
-                if (s.opacity > 1 || s.opacity < 0) s.blink *= -1;
-                ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
-                ctx.fillRect(s.x, s.y, s.size, s.size);
-            });
-            requestAnimationFrame(animate);
-        }
-
-        window.addEventListener('resize', init);
-        init();
-        animate();
-
         function showRoles() {
             const grid = document.getElementById("rolesGrid");
             grid.style.display = (grid.style.display === "grid") ? "none" : "grid";
